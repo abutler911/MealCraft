@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Card, CardHeader, CardTitle } from "../ui/Card";
+import { Card, CardHeader } from "../ui/Card";
 import { Button } from "../ui/Button";
 import { MealCard } from "./MealCard";
 import {
