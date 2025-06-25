@@ -61,9 +61,9 @@ const Title = styled.h1`
 
 const Tagline = styled.p`
   font-size: 0.875rem;
-  color: ${(props) => props.theme.colors.text.muted};
+  color: ${(props) => props.theme.colors.primary};
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
 
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     font-size: 0.75rem;
@@ -76,10 +76,10 @@ export const Header = () => {
       <Container>
         <HeaderContent>
           <BrandSection>
-            <LogoIcon>🥑</LogoIcon>
+            <LogoIcon>🍽️</LogoIcon>
             <BrandText>
-              <Title>Keto Meal Planner</Title>
-              <Tagline>14-Day Ketogenic Meal Planning</Tagline>
+              <Title>MealCraft</Title>
+              <Tagline>Fuel Your Potential</Tagline>
             </BrandText>
           </BrandSection>
         </HeaderContent>

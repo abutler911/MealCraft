@@ -48,7 +48,7 @@ export const Footer = () => {
       <Container>
         <FooterContent>
           <Copyright>
-            <span>© 2025 Keto Meal Planner</span>
+            <span>© 2025 MealCraft</span>
             <Divider>•</Divider>
             <span>Built by Andy</span>
           </Copyright>
