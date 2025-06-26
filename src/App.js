@@ -7,7 +7,7 @@ import { Button } from "./components/ui/Button";
 import { WeekToggle } from "./components/dashboard/WeekToggle";
 import { DatePicker } from "./components/dashboard/DatePicker";
 import { DayCard } from "./components/dashboard/DayCard";
-import { DayModal } from "./components/dashboard/DayModal"; // NEW IMPORT
+import { DayModal } from "./components/dashboard/DayModal";
 import { ShoppingList } from "./components/dashboard/ShoppingList";
 import { mealPlans } from "./data/mealPlans";
 import { useLocalStorage } from "./hooks/useLocalStorage";
@@ -15,13 +15,12 @@ import { getDateForDay } from "./utils/dateHelpers";
 
 function App() {
   const [currentWeek, setCurrentWeek] = useState(1);
-  const [selectedDay, setSelectedDay] = useState(null); // CHANGED: was expandedDay
+  const [selectedDay, setSelectedDay] = useState(null);
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [completedDays, setCompletedDays] = useLocalStorage(
     "keto-completed-days",
     []
   );
-
   const [startDate, setStartDate] = useLocalStorage(
     "keto-start-date",
     new Date().toISOString().split("T")[0]
@@ -29,16 +28,14 @@ function App() {
 
   const handleWeekChange = (week) => {
     setCurrentWeek(week);
-    setSelectedDay(null); // CHANGED: Close modal when switching weeks
+    setSelectedDay(null);
   };
 
   const handleOpenModal = (dayNumber) => {
-    // CHANGED: was handleToggleExpand
     setSelectedDay(dayNumber);
   };
 
   const handleCloseModal = () => {
-    // NEW FUNCTION
     setSelectedDay(null);
   };
 
@@ -67,7 +64,6 @@ function App() {
   const completedThisWeek = getCompletedCountForWeek();
   const totalDaysInWeek = Object.keys(currentWeekMeals).length;
 
-  // Get selected day data for modal
   const selectedDayData = selectedDay ? currentWeekMeals[selectedDay] : null;
   const selectedDayDate = selectedDay
     ? getDateForDay(startDate, selectedDay)
@@ -83,33 +79,25 @@ function App() {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "flex-start",
+              alignItems: "center",
               marginBottom: "2rem",
               flexWrap: "wrap",
               gap: "1rem",
             }}
           >
             <div
-              style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+              style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}
             >
-              <DatePicker
-                startDate={startDate}
-                onStartDateChange={setStartDate}
+              <WeekToggle
+                currentWeek={currentWeek}
+                onWeekChange={handleWeekChange}
               />
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}
-              >
-                <WeekToggle
-                  currentWeek={currentWeek}
-                  onWeekChange={handleWeekChange}
-                />
-                <div style={{ color: "white", fontSize: "0.875rem" }}>
-                  <div style={{ color: "#94a3b8" }}>
-                    Week {currentWeek} Progress
-                  </div>
-                  <div style={{ fontWeight: "600" }}>
-                    {completedThisWeek}/{totalDaysInWeek} days completed
-                  </div>
+              <div style={{ color: "white", fontSize: "0.875rem" }}>
+                <div style={{ color: "#94a3b8" }}>
+                  Week {currentWeek} Progress
+                </div>
+                <div style={{ fontWeight: "600" }}>
+                  {completedThisWeek}/{totalDaysInWeek} days completed
                 </div>
               </div>
             </div>
@@ -125,7 +113,7 @@ function App() {
             </div>
           </div>
 
-          {/* Meal Plan Grid */}
+          {/* Meal Plan Grid with DatePicker as first item */}
           <div
             style={{
               display: "grid",
@@ -133,6 +121,12 @@ function App() {
               gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
             }}
           >
+            <DatePicker
+              startDate={startDate}
+              onStartDateChange={setStartDate}
+            />
+
+            {/* Day Cards */}
             {Object.entries(currentWeekMeals).map(([dayIndex, meals]) => {
               const dayNumber = parseInt(dayIndex);
               const dayDate = getDateForDay(startDate, dayNumber);
@@ -143,7 +137,7 @@ function App() {
                   dayNumber={dayNumber}
                   meals={meals}
                   isCompleted={completedDays.includes(dayNumber)}
-                  onOpenModal={handleOpenModal} // CHANGED: was onToggleExpand
+                  onOpenModal={handleOpenModal}
                   onToggleComplete={handleToggleComplete}
                   date={dayDate}
                 />

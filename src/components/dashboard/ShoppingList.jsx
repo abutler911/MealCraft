@@ -136,7 +136,7 @@ export const ShoppingList = ({ isOpen, onClose }) => {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="🛒 Keto Shopping List"
+      title="🛒 MealCraft Shopping List"
       maxWidth="800px"
     >
       <ShoppingStats>
