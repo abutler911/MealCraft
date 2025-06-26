@@ -7,6 +7,7 @@ import { Button } from "./components/ui/Button";
 import { WeekToggle } from "./components/dashboard/WeekToggle";
 import { DatePicker } from "./components/dashboard/DatePicker";
 import { DayCard } from "./components/dashboard/DayCard";
+import { DayModal } from "./components/dashboard/DayModal"; // NEW IMPORT
 import { ShoppingList } from "./components/dashboard/ShoppingList";
 import { mealPlans } from "./data/mealPlans";
 import { useLocalStorage } from "./hooks/useLocalStorage";
@@ -14,14 +15,13 @@ import { getDateForDay } from "./utils/dateHelpers";
 
 function App() {
   const [currentWeek, setCurrentWeek] = useState(1);
-  const [expandedDay, setExpandedDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null); // CHANGED: was expandedDay
   const [showShoppingList, setShowShoppingList] = useState(false);
   const [completedDays, setCompletedDays] = useLocalStorage(
     "keto-completed-days",
     []
   );
 
-  // Set default start date to today
   const [startDate, setStartDate] = useLocalStorage(
     "keto-start-date",
     new Date().toISOString().split("T")[0]
@@ -29,11 +29,17 @@ function App() {
 
   const handleWeekChange = (week) => {
     setCurrentWeek(week);
-    setExpandedDay(null); // Close any expanded day when switching weeks
+    setSelectedDay(null); // CHANGED: Close modal when switching weeks
   };
 
-  const handleToggleExpand = (dayNumber) => {
-    setExpandedDay(expandedDay === dayNumber ? null : dayNumber);
+  const handleOpenModal = (dayNumber) => {
+    // CHANGED: was handleToggleExpand
+    setSelectedDay(dayNumber);
+  };
+
+  const handleCloseModal = () => {
+    // NEW FUNCTION
+    setSelectedDay(null);
   };
 
   const handleToggleComplete = (dayNumber) => {
@@ -60,6 +66,12 @@ function App() {
   const currentWeekMeals = getCurrentWeekMeals();
   const completedThisWeek = getCompletedCountForWeek();
   const totalDaysInWeek = Object.keys(currentWeekMeals).length;
+
+  // Get selected day data for modal
+  const selectedDayData = selectedDay ? currentWeekMeals[selectedDay] : null;
+  const selectedDayDate = selectedDay
+    ? getDateForDay(startDate, selectedDay)
+    : null;
 
   return (
     <ThemeProvider theme={theme}>
@@ -131,14 +143,26 @@ function App() {
                   dayNumber={dayNumber}
                   meals={meals}
                   isCompleted={completedDays.includes(dayNumber)}
-                  isExpanded={expandedDay === dayNumber}
-                  onToggleExpand={handleToggleExpand}
+                  onOpenModal={handleOpenModal} // CHANGED: was onToggleExpand
                   onToggleComplete={handleToggleComplete}
                   date={dayDate}
                 />
               );
             })}
           </div>
+
+          {/* Day Detail Modal */}
+          <DayModal
+            isOpen={!!selectedDay}
+            onClose={handleCloseModal}
+            dayNumber={selectedDay}
+            meals={selectedDayData}
+            date={selectedDayDate}
+            isCompleted={
+              selectedDay ? completedDays.includes(selectedDay) : false
+            }
+            onToggleComplete={handleToggleComplete}
+          />
 
           {/* Shopping List Modal */}
           <ShoppingList

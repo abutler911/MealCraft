@@ -1,13 +1,7 @@
 import styled from "styled-components";
 import { Card, CardHeader } from "../ui/Card";
 import { Button } from "../ui/Button";
-import { MealCard } from "./MealCard";
-import {
-  formatDate,
-  formatDateLong,
-  isToday,
-  isPast,
-} from "../../utils/dateHelpers";
+import { formatDate, isToday, isPast } from "../../utils/dateHelpers";
 
 const DayNumber = styled.div.withConfig({
   shouldForwardProp: (prop) =>
@@ -106,18 +100,6 @@ const MealPreviewItem = styled.div`
   text-align: center;
 `;
 
-const ExpandedContent = styled.div`
-  margin-top: ${(props) => props.theme.spacing.md};
-  padding-top: ${(props) => props.theme.spacing.md};
-  border-top: 1px solid ${(props) => props.theme.colors.gray[700]};
-`;
-
-const MealGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-`;
-
 const CompleteButton = styled.button.withConfig({
   shouldForwardProp: (prop) => !["$completed"].includes(prop),
 })`
@@ -146,8 +128,7 @@ export const DayCard = ({
   dayNumber,
   meals,
   isCompleted,
-  isExpanded,
-  onToggleExpand,
+  onOpenModal,
   onToggleComplete,
   date,
 }) => {
@@ -188,53 +169,19 @@ export const DayCard = ({
           <Button
             size="sm"
             variant="secondary"
-            onClick={() => onToggleExpand(dayNumber)}
+            onClick={() => onOpenModal(dayNumber)}
           >
-            {isExpanded ? "▲" : "▼"} {isExpanded ? "Hide" : "Show"}
+            📋 View Meals
           </Button>
         </Flex>
       </CardHeader>
 
-      {!isExpanded && (
-        <MealPreview>
-          <MealPreviewItem>🍳 {meals?.breakfast?.length || 0}</MealPreviewItem>
-          <MealPreviewItem>🥗 {meals?.lunch?.length || 0}</MealPreviewItem>
-          <MealPreviewItem>🥜 {meals?.snack?.length || 0}</MealPreviewItem>
-          <MealPreviewItem>🍽️ {meals?.dinner?.length || 0}</MealPreviewItem>
-        </MealPreview>
-      )}
-
-      {isExpanded && (
-        <ExpandedContent>
-          {date && (
-            <div
-              style={{
-                marginBottom: "1rem",
-                padding: "0.75rem",
-                backgroundColor: "#374151",
-                borderRadius: "0.5rem",
-                textAlign: "center",
-              }}
-            >
-              <div
-                style={{
-                  color: "#10b981",
-                  fontWeight: "600",
-                  fontSize: "1rem",
-                }}
-              >
-                {formatDateLong(date)}
-              </div>
-            </div>
-          )}
-          <MealGrid>
-            <MealCard mealType="breakfast" items={meals?.breakfast || []} />
-            <MealCard mealType="lunch" items={meals?.lunch || []} />
-            <MealCard mealType="snack" items={meals?.snack || []} />
-            <MealCard mealType="dinner" items={meals?.dinner || []} />
-          </MealGrid>
-        </ExpandedContent>
-      )}
+      <MealPreview>
+        <MealPreviewItem>🍳 {meals?.breakfast?.length || 0}</MealPreviewItem>
+        <MealPreviewItem>🥗 {meals?.lunch?.length || 0}</MealPreviewItem>
+        <MealPreviewItem>🥜 {meals?.snack?.length || 0}</MealPreviewItem>
+        <MealPreviewItem>🍽️ {meals?.dinner?.length || 0}</MealPreviewItem>
+      </MealPreview>
     </Card>
   );
 };
