@@ -1,360 +1,149 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Container } from "../../styles/GlobalStyles";
 
 const HeaderContainer = styled.header`
-  background: linear-gradient(
-    135deg,
-    ${(props) => props.theme.colors.gray[900]} 0%,
-    ${(props) => props.theme.colors.gray[800]} 50%,
-    ${(props) => props.theme.colors.gray[900]} 100%
-  );
-  border-bottom: 2px solid ${(props) => props.theme.colors.primary};
-  padding: ${(props) => props.theme.spacing.xl} 0;
+  background: ${(p) => p.theme.colors.gray[900]};
+  border-bottom: 1px solid ${(p) => p.theme.colors.gray[800]};
+  padding: ${(p) => (p.shrunk ? p.theme.spacing.lg : p.theme.spacing.xl)} 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(20px);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-        circle at 20% 80%,
-        ${(props) => props.theme.colors.primary}15 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 80% 20%,
-        ${(props) => props.theme.colors.primary}10 0%,
-        transparent 50%
-      );
-    pointer-events: none;
-  }
+  contain: paint;
 `;
 
 const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  z-index: 2;
-
-  @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+  gap: ${(p) => p.theme.spacing.lg};
+  @media (max-width: ${(p) => p.theme.breakpoints.lg}) {
     flex-direction: column;
-    gap: ${(props) => props.theme.spacing.lg};
     text-align: center;
   }
 `;
 
-const BrandSection = styled.div`
+const BrandLink = styled.a`
   display: flex;
   align-items: center;
-  gap: ${(props) => props.theme.spacing.md};
-  transition: all ${(props) => props.theme.transitions.normal};
-
-  &:hover {
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    gap: ${(props) => props.theme.spacing.sm};
+  gap: ${(p) => p.theme.spacing.md};
+  text-decoration: none;
+  &:focus-visible {
+    outline: 2px solid ${(p) => p.theme.colors.primary};
+    outline-offset: 2px;
   }
 `;
 
-const LogoContainer = styled.div`
-  position: relative;
+const LogoBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(
-    135deg,
-    ${(props) => props.theme.colors.primary} 0%,
-    ${(props) => props.theme.colors.primaryHover} 100%
-  );
-  border-radius: ${(props) => props.theme.borderRadius.xl};
-  box-shadow: 0 8px 25px ${(props) => props.theme.colors.primary}30;
-  transition: all ${(props) => props.theme.transitions.normal};
-
-  &:hover {
-    box-shadow: 0 12px 35px ${(props) => props.theme.colors.primary}40;
-    transform: translateY(-2px) scale(1.05);
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(
-      135deg,
-      ${(props) => props.theme.colors.primary},
-      ${(props) => props.theme.colors.primaryHover}
-    );
-    border-radius: ${(props) => props.theme.borderRadius.xl};
-    z-index: -1;
-    opacity: 0;
-    transition: opacity ${(props) => props.theme.transitions.normal};
-  }
-
-  &:hover::after {
-    opacity: 0.3;
-  }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-    width: 50px;
-    height: 50px;
-  }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 45px;
-    height: 45px;
-  }
+  width: ${(p) => (p.shrunk ? "44px" : "56px")};
+  height: ${(p) => (p.shrunk ? "44px" : "56px")};
+  background: ${(p) => p.theme.colors.primary};
+  border-radius: ${(p) => p.theme.borderRadius.md};
+  transition: width ${(p) => p.theme.transitions.fast},
+    height ${(p) => p.theme.transitions.fast};
 `;
 
-const Logo = styled.img`
-  width: 36px;
-  height: 36px;
+const LogoImg = styled.img.attrs({ alt: "MealCraft logo", loading: "eager" })`
+  width: ${(p) => (p.shrunk ? "24px" : "32px")};
+  height: ${(p) => (p.shrunk ? "24px" : "32px")};
   object-fit: contain;
-  filter: brightness(1.1);
-  transition: all ${(props) => props.theme.transitions.fast};
-
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-    width: 30px;
-    height: 30px;
-  }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 28px;
-    height: 28px;
-  }
 `;
 
 const BrandText = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
 `;
 
 const Title = styled.h1`
-  font-size: 2.25rem;
-  font-weight: 800;
-  background: linear-gradient(
-    135deg,
-    ${(props) => props.theme.colors.text.primary} 0%,
-    ${(props) => props.theme.colors.primary} 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-
-  @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
-    font-size: 2rem;
-  }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-    font-size: 1.875rem;
-  }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    font-size: 1.5rem;
-  }
+  font-size: ${(p) => (p.shrunk ? "1.5rem" : "2rem")};
+  font-weight: 700;
+  color: ${(p) => p.theme.colors.text.primary};
 `;
 
-const Tagline = styled.p`
-  font-size: 0.875rem;
-  color: ${(props) => props.theme.colors.primary};
-  margin: 0;
-  font-weight: 600;
+const Tagline = styled.span`
+  font-size: 0.75rem;
+  color: ${(p) => p.theme.colors.primary};
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.9;
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    font-size: 0.75rem;
-  }
+  letter-spacing: 0.08em;
 `;
 
-const StatsSection = styled.div`
+const Stats = styled.ul`
   display: flex;
   align-items: center;
-  gap: ${(props) => props.theme.spacing.md};
-
-  @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+  gap: ${(p) => p.theme.spacing.md};
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  @media (max-width: ${(p) => p.theme.breakpoints.lg}) {
     order: -1;
   }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    gap: ${(props) => props.theme.spacing.sm};
-  }
 `;
 
-const StatItem = styled.div`
-  text-align: center;
-  padding: ${(props) => props.theme.spacing.sm};
-  background: ${(props) => props.theme.colors.gray[800]};
-  border-radius: ${(props) => props.theme.borderRadius.lg};
-  border: 1px solid ${(props) => props.theme.colors.gray[700]};
-  min-width: 80px;
-  transition: all ${(props) => props.theme.transitions.fast};
-
-  &:hover {
-    border-color: ${(props) => props.theme.colors.primary};
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    min-width: 70px;
-    padding: ${(props) => props.theme.spacing.xs};
-  }
+const Stat = styled.li`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+  padding: ${(p) => p.theme.spacing.xs};
+  background: ${(p) => p.theme.colors.gray[800]};
+  border-radius: ${(p) => p.theme.borderRadius.sm};
+  border: 1px solid ${(p) => p.theme.colors.gray[700]};
 `;
 
-const StatNumber = styled.div`
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: ${(props) => props.theme.colors.primary};
-  line-height: 1;
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    font-size: 1.125rem;
-  }
+const StatNumber = styled.span`
+  font-size: 1rem;
+  font-weight: 700;
+  color: ${(p) => p.theme.colors.primary};
 `;
 
-const StatLabel = styled.div`
-  font-size: 0.75rem;
-  color: ${(props) => props.theme.colors.text.muted};
-  font-weight: 500;
+const StatLabel = styled.span`
+  font-size: 0.625rem;
+  color: ${(p) => p.theme.colors.text.muted};
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 0.125rem;
-
-  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    font-size: 0.6875rem;
-  }
-`;
-
-const FloatingElements = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 1;
-`;
-
-const FloatingIcon = styled.div`
-  position: absolute;
-  font-size: 1.5rem;
-  opacity: 0.05;
-  color: ${(props) => props.theme.colors.primary};
-
-  &:nth-child(1) {
-    top: 20%;
-    left: 15%;
-    animation: float1 8s ease-in-out infinite;
-  }
-  &:nth-child(2) {
-    top: 60%;
-    right: 20%;
-    animation: float2 10s ease-in-out infinite;
-  }
-  &:nth-child(3) {
-    top: 30%;
-    right: 10%;
-    animation: float3 12s ease-in-out infinite;
-  }
-  &:nth-child(4) {
-    bottom: 30%;
-    left: 10%;
-    animation: float1 9s ease-in-out infinite;
-  }
-
-  @keyframes float1 {
-    0%,
-    100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-15px) rotate(5deg);
-    }
-  }
-
-  @keyframes float2 {
-    0%,
-    100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-20px) rotate(-5deg);
-    }
-  }
-
-  @keyframes float3 {
-    0%,
-    100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-10px) rotate(3deg);
-    }
-  }
+  letter-spacing: 0.04em;
 `;
 
 export const Header = () => {
+  const [shrunk, setShrunk] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShrunk(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   const stats = [
     { number: "14", label: "Days" },
     { number: "56", label: "Meals" },
     { number: "80+", label: "Items" },
   ];
-
   return (
-    <HeaderContainer>
-      <FloatingElements>
-        <FloatingIcon>🥑</FloatingIcon>
-        <FloatingIcon>🍽️</FloatingIcon>
-        <FloatingIcon>📋</FloatingIcon>
-        <FloatingIcon>⚡</FloatingIcon>
-      </FloatingElements>
-
+    <HeaderContainer shrunk={shrunk}>
       <Container>
         <HeaderContent>
-          <BrandSection>
-            <LogoContainer>
-              <Logo
-                src="/applogo.png"
-                alt="MealCraft Logo"
-                onError={(e) => {
-                  e.target.style.display = "none";
-                  e.target.nextSibling.style.display = "block";
-                }}
-              />
-              <span style={{ display: "none", fontSize: "1.5rem" }}>🍽️</span>
-            </LogoContainer>
+          <BrandLink href="/" aria-label="MealCraft home">
+            <LogoBox shrunk={shrunk}>
+              <LogoImg src="/applogo.png" shrunk={shrunk} />
+            </LogoBox>
             <BrandText>
-              <Title>MealCraft</Title>
+              <Title shrunk={shrunk}>MealCraft</Title>
               <Tagline>Fuel Your Potential</Tagline>
             </BrandText>
-          </BrandSection>
-
-          <StatsSection>
-            {stats.map((stat, index) => (
-              <StatItem key={index}>
-                <StatNumber>{stat.number}</StatNumber>
-                <StatLabel>{stat.label}</StatLabel>
-              </StatItem>
+          </BrandLink>
+          <Stats role="list">
+            {stats.map((s) => (
+              <Stat
+                key={s.label}
+                role="listitem"
+                aria-label={`${s.number} ${s.label}`}
+              >
+                <StatNumber>{s.number}</StatNumber>
+                <StatLabel>{s.label}</StatLabel>
+              </Stat>
             ))}
-          </StatsSection>
+          </Stats>
         </HeaderContent>
       </Container>
     </HeaderContainer>

@@ -1,38 +1,35 @@
 // src/styles/theme.js
 export const theme = {
   colors: {
-    primary: "#10b981", // emerald-500
-    primaryHover: "#059669", // emerald-600
-    secondary: "#065f46", // emerald-800
+    primary: "#1e90ff", // dodger blue 500
+    primaryHover: "#1c7cd6", // dodger blue 600
+    secondary: "#0a84ff", // accent blue
 
-    // Grays
-    dark: "#0f172a", // slate-900
-    darker: "#020617", // slate-950
+    bg: "#0f0f0f", // deep charcoal background
+    surface: "#1a1a1a", // card & header surfaces
+
     gray: {
-      50: "#f8fafc",
-      100: "#f1f5f9",
-      200: "#e2e8f0",
-      300: "#cbd5e1",
-      400: "#94a3b8",
-      500: "#64748b",
-      600: "#475569",
-      700: "#334155",
-      800: "#1e293b",
-      900: "#0f172a",
-      950: "#020617",
+      50: "#fafafa",
+      100: "#f4f4f5",
+      200: "#e4e4e7",
+      300: "#d4d4d8",
+      400: "#a1a1aa",
+      500: "#71717a",
+      600: "#52525b",
+      700: "#3f3f46",
+      800: "#27272a",
+      900: "#18181b",
     },
 
-    // Status colors
-    success: "#22c55e",
-    warning: "#f59e0b",
-    error: "#ef4444",
-
-    // Text colors
     text: {
       primary: "#ffffff",
-      secondary: "#cbd5e1",
-      muted: "#94a3b8",
+      secondary: "#d4d4d8",
+      muted: "#71717a",
     },
+
+    success: "#22c55e",
+    warning: "#facc15",
+    error: "#ef4444",
   },
 
   spacing: {
@@ -45,23 +42,23 @@ export const theme = {
   },
 
   borderRadius: {
-    sm: "0.375rem",
-    md: "0.5rem",
-    lg: "0.75rem",
-    xl: "1rem",
+    sm: "0.25rem",
+    md: "0.375rem",
+    lg: "0.5rem",
+    xl: "0.75rem",
   },
 
   shadows: {
-    sm: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-    md: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-    lg: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-    xl: "0 20px 25px -5px rgb(0 0 0 / 0.1)",
+    sm: "0 1px 2px rgb(0 0 0 / 0.05)",
+    md: "0 2px 4px rgb(0 0 0 / 0.08)",
+    lg: "0 4px 8px rgb(0 0 0 / 0.08)",
+    xl: "0 8px 16px rgb(0 0 0 / 0.08)",
   },
 
   transitions: {
-    fast: "150ms ease-in-out",
-    normal: "250ms ease-in-out",
-    slow: "350ms ease-in-out",
+    fast: "120ms ease-out",
+    normal: "200ms ease-out",
+    slow: "300ms ease-out",
   },
 
   breakpoints: {
