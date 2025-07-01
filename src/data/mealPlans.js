@@ -226,6 +226,198 @@ export const mealPlans = {
       ],
     },
   },
+  3: {
+    // Week 3 (Days 15–21)
+    15: {
+      breakfast: [
+        "Tofu scramble with spinach and turmeric",
+        "Chia pudding with coconut milk",
+        "Herbal tea",
+      ],
+      lunch: [
+        "Zucchini boats stuffed with mushrooms and walnuts",
+        "Avocado slices with lemon",
+      ],
+      snack: ["Coconut flakes", "Celery with almond butter"],
+      dinner: [
+        "Stuffed bell peppers with cauliflower rice and herbs",
+        "Side arugula salad with olive oil and lemon",
+      ],
+    },
+    16: {
+      breakfast: [
+        "Keto smoothie (spinach, almond milk, avocado, protein powder, chia)",
+        "Boiled egg",
+      ],
+      lunch: [
+        "Grilled chicken skewers with zucchini and onion",
+        "Green salad with olive oil and apple cider vinegar",
+      ],
+      snack: ["Turkey slices", "Cucumber with guacamole"],
+      dinner: [
+        "Beef stir fry with coconut aminos, mushrooms, and bok choy",
+        "Steamed broccoli",
+      ],
+    },
+    17: {
+      breakfast: [
+        "Scrambled eggs with dill and avocado oil",
+        "2 strips turkey bacon",
+      ],
+      lunch: [
+        "Grilled salmon over mixed greens",
+        "Radishes with olive oil + sea salt",
+      ],
+      snack: ["Macadamia nuts", "1 boiled egg"],
+      dinner: [
+        "Zucchini lasagna (zucchini slices, ground beef, ricotta, herbs)",
+        "Roasted garlic Brussels sprouts",
+      ],
+    },
+    18: {
+      breakfast: ["Egg muffins with peppers and turkey sausage", "Green tea"],
+      lunch: ["Leftover zucchini lasagna", "Side of leafy greens"],
+      snack: ["Hard cheese cubes", "Almonds"],
+      dinner: [
+        "Seared duck breast",
+        "Cauliflower puree with olive oil",
+        "Sautéed spinach with garlic",
+      ],
+    },
+    19: {
+      breakfast: [
+        "Avocado smoothie (avocado, almond milk, chia seeds)",
+        "Handful of walnuts",
+      ],
+      lunch: [
+        "Turkey lettuce wraps with avocado mayo and pickles",
+        "Sliced bell peppers",
+      ],
+      snack: ["Mini cheese wheel", "Kale chips"],
+      dinner: ["Roasted chicken legs", "Grilled eggplant and zucchini"],
+    },
+    20: {
+      breakfast: [
+        "Full-fat Greek yogurt with hemp seeds and cinnamon",
+        "Black coffee",
+      ],
+      lunch: [
+        "Grilled shrimp salad (greens, cucumber, olive oil, lemon)",
+        "Seaweed snacks",
+      ],
+      snack: ["Deviled eggs", "Sunflower seeds"],
+      dinner: [
+        "Beef meatballs in marinara (no sugar) over spaghetti squash",
+        "Parmesan shavings",
+      ],
+    },
+    21: {
+      breakfast: [
+        "3-egg omelet with goat cheese, basil, and spinach",
+        "Herbal tea",
+      ],
+      lunch: ["Grilled sausage with cabbage slaw (mayo + ACV)", "Radish chips"],
+      snack: ["Turkey roll-ups with avocado slices"],
+      dinner: [
+        "Mahi-mahi filet with lemon butter",
+        "Steamed kale with sesame oil",
+      ],
+    },
+  },
+  4: {
+    // Week 4 (Days 22–28)
+    22: {
+      breakfast: [
+        "Coconut chia pudding with raspberries (small portion)",
+        "Handful of almonds",
+      ],
+      lunch: [
+        "Stuffed portobello mushrooms (spinach, garlic, pine nuts, olive oil)",
+        "Side salad with lemon vinaigrette",
+      ],
+      snack: ["Guacamole with celery sticks", "Coconut chips"],
+      dinner: ["Eggplant curry (coconut milk base)", "Cauliflower rice"],
+    },
+    23: {
+      breakfast: ["2 fried eggs in butter", "1/2 avocado", "Black coffee"],
+      lunch: [
+        "Ground beef lettuce tacos with avocado and salsa",
+        "Zucchini chips",
+      ],
+      snack: ["Cheddar cubes", "Seaweed snack"],
+      dinner: [
+        "Pan-seared chicken thighs",
+        "Garlic sautéed chard",
+        "Cauliflower mash",
+      ],
+    },
+    24: {
+      breakfast: [
+        "Keto smoothie (kale, avocado, MCT oil, unsweetened coconut milk)",
+        "Boiled egg",
+      ],
+      lunch: ["Roasted turkey slices", "Steamed broccoli with tahini drizzle"],
+      snack: ["Almond butter spoonful", "Few hazelnuts"],
+      dinner: ["Grilled trout with lemon", "Asparagus sautéed in olive oil"],
+    },
+    25: {
+      breakfast: [
+        "Tofu and avocado bowl with sesame oil + chili flakes",
+        "Herbal tea",
+      ],
+      lunch: [
+        "Cucumber noodles with peanut-lime sauce (sugar-free)",
+        "Side cabbage slaw",
+      ],
+      snack: ["Pistachios", "Seaweed crisps"],
+      dinner: [
+        "Cauliflower crust keto pizza (cheese, tomato, olives)",
+        "Zucchini fries",
+      ],
+    },
+    26: {
+      breakfast: [
+        "Scrambled eggs with chives + avocado oil",
+        "Turkey bacon",
+        "Black coffee",
+      ],
+      lunch: ["Cobb salad with grilled shrimp, egg, avocado, ranch dressing"],
+      snack: ["Boiled eggs", "Pickles"],
+      dinner: [
+        "Stuffed chicken breast with spinach + cheese",
+        "Roasted broccoli",
+      ],
+    },
+    27: {
+      breakfast: [
+        "Almond flour waffles with butter (no syrup)",
+        "Sausage patty",
+      ],
+      lunch: ["Egg salad in lettuce wraps", "Radish slices with sea salt"],
+      snack: ["Macadamia nuts", "Mini cheese wheel"],
+      dinner: [
+        "Grilled lamb chops",
+        "Cauliflower rice pilaf",
+        "Cucumber salad",
+      ],
+    },
+    28: {
+      breakfast: [
+        "Keto smoothie (protein powder, almond milk, cocoa, spinach)",
+        "Handful of walnuts",
+      ],
+      lunch: [
+        "Roasted chicken thighs",
+        "Arugula and avocado salad with lemon dressing",
+      ],
+      snack: ["Beef jerky", "Cucumber slices"],
+      dinner: [
+        "Seared scallops",
+        "Zoodles with olive oil + garlic",
+        "Roasted mushrooms",
+      ],
+    },
+  },
 };
 
 export const shoppingList = [

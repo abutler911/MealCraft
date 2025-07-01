@@ -115,9 +115,9 @@ export const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const stats = [
-    { number: "14", label: "Days" },
-    { number: "56", label: "Meals" },
-    { number: "80+", label: "Items" },
+    { number: "28", label: "Days" },
+    { number: "112", label: "Meals" },
+    { number: "100+", label: "Items" },
   ];
   return (
     <HeaderContainer shrunk={shrunk}>

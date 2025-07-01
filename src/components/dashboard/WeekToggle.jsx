@@ -39,6 +39,12 @@ export const WeekToggle = ({ currentWeek, onWeekChange }) => {
       <ToggleButton $active={currentWeek === 2} onClick={() => onWeekChange(2)}>
         Week 2
       </ToggleButton>
+      <ToggleButton $active={currentWeek === 3} onClick={() => onWeekChange(3)}>
+        Week 3
+      </ToggleButton>
+      <ToggleButton $active={currentWeek === 4} onClick={() => onWeekChange(4)}>
+        Week 4
+      </ToggleButton>
     </ToggleContainer>
   );
 };
