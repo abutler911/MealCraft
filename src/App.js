@@ -34,6 +34,7 @@ function App() {
   const [lastMealPlans, setLastMealPlans] = useState(null); // 🟢 Used for undo
   const [isLoading, setIsLoading] = useState(false); // 🟢 Controls loading spinner
   const [showConfirmShuffle, setShowConfirmShuffle] = useState(false); // 🟢 Controls confirmation modal
+  const [showStartOverConfirm, setShowStartOverConfirm] = useState(false); // 🟢 Controls start over confirmation
 
   const handleWeekChange = (week) => {
     setCurrentWeek(week);
@@ -155,6 +156,79 @@ function App() {
     }
   };
 
+  const handleStartOver = () => {
+    setIsLoading(true); // Show loading spinner
+    const start = Date.now();
+
+    const doStartOver = () => {
+      // 1. Clear completed days
+      setCompletedDays([]);
+
+      // 2. Clear custom meal plans (localStorage will be updated by useLocalStorage hook)
+      // Setting to an empty object. handleShuffleMeals will then use base mealPlans.
+      setCustomMealPlans({});
+      setLastMealPlans(null); // Also clear undo history for shuffled plans
+
+      // 3. Reset start date to today
+      setStartDate(new Date().toISOString().split("T")[0]);
+
+      // 4. Regenerate and save a new meal plan
+      // handleShuffleMeals already saves to localStorage and updates customMealPlans state
+      // It needs to be slightly adjusted or called in a way that it re-initializes if customMealPlans is empty.
+      // The current handleShuffleMeals should work as it checks:
+      // const weekMeals = customMealPlans[weekNum] || mealPlans[weekNum];
+      // So if customMealPlans is {}, it will use mealPlans.
+
+      // Call a modified or direct shuffle that initializes from mealPlans
+      const weeks = [1, 2];
+      const allBaseDays = [];
+      weeks.forEach((weekNum) => {
+        const weekBaseMeals = mealPlans[weekNum]; // Explicitly use base meal plan
+        Object.entries(weekBaseMeals).forEach(([dayKey, meals]) => {
+          allBaseDays.push({ week: weekNum, day: dayKey, ...meals });
+        });
+      });
+
+      const breakfasts = shuffleArrayNoConsecutiveDupes(
+        allBaseDays.map((d) => d.breakfast)
+      );
+      const lunches = shuffleArrayNoConsecutiveDupes(
+        allBaseDays.map((d) => d.lunch)
+      );
+      const snacks = shuffleArrayNoConsecutiveDupes(
+        allBaseDays.map((d) => d.snack)
+      );
+      const dinners = shuffleArrayNoConsecutiveDupes(
+        allBaseDays.map((d) => d.dinner)
+      );
+
+      const newInitialMeals = {};
+      allBaseDays.forEach((_, i) => {
+        const { week, day } = allBaseDays[i];
+        if (!newInitialMeals[week]) newInitialMeals[week] = {};
+        newInitialMeals[week][day] = {
+          breakfast: breakfasts[i],
+          lunch: lunches[i],
+          snack: snacks[i],
+          dinner: dinners[i],
+        };
+      });
+      setCustomMealPlans({ 1: newInitialMeals[1], 2: newInitialMeals[2] });
+
+
+      // 5. Reset UI state
+      setShowStartOverConfirm(false);
+      setCurrentWeek(1); // Go back to week 1
+
+      // Ensure loading spinner is visible for at least a bit
+      const duration = Date.now() - start;
+      const delay = Math.max(1500 - duration, 0); // Shorter delay than full shuffle
+      setTimeout(() => setIsLoading(false), delay);
+    };
+
+    setTimeout(doStartOver, 250); // Short delay before starting the process
+  };
+
   const currentWeekMeals = getCurrentWeekMeals();
   const completedThisWeek = getCompletedCountForWeek();
   const totalDaysInWeek = Object.keys(currentWeekMeals).length;
@@ -241,6 +315,78 @@ function App() {
             </div>
           )}
 
+          {/* ⚠️ Confirmation modal for START OVER */}
+          {showStartOverConfirm && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: "rgba(0,0,0,0.7)", // Darker overlay
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 10000, // Ensure it's on top
+              }}
+            >
+              <div
+                style={{
+                  background: "#1e293b", // Darker blue-gray
+                  borderRadius: "12px",
+                  border: "1px solid #f97316", // Orange border for warning
+                  padding: "2rem",
+                  width: "90%",
+                  maxWidth: "420px",
+                  textAlign: "center",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
+                }}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="startover-confirm-heading"
+                aria-describedby="startover-confirm-desc"
+              >
+                <h3
+                  id="startover-confirm-heading"
+                  style={{ marginBottom: "1rem", color: "#f97316", fontSize: "1.5rem" }}
+                >
+                  Restart Your 14-Day Plan?
+                </h3>
+                <p
+                  id="startover-confirm-desc"
+                  style={{ marginBottom: "1.5rem", color: "#cbd5e1", fontSize: "1rem" }}
+                >
+                  This will clear all your completed days and generate a fresh
+                  14-day meal plan. Your current progress will be lost.
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "1rem",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    variant="contained" // Or a specific "danger" variant if available
+                    onClick={() => handleStartOver()} // This function will be created next
+                    aria-label="Confirm start over"
+                    style={{ backgroundColor: "#f97316", color: "white" }}
+                  >
+                    Yes, Start Over
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowStartOverConfirm(false)}
+                    aria-label="Cancel start over"
+                  >
+                    No, Cancel
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* 🔘 Top controls (shuffle, undo) */}
           <div
             style={{
@@ -285,6 +431,15 @@ function App() {
               >
                  Shuffle Meals
               </Button>
+                {completedDays.length >= 14 && (
+                  <Button
+                    variant="warning" // Assuming a 'warning' or similar variant exists or can be added
+                    onClick={() => setShowStartOverConfirm(true)}
+                    aria-label="Start over meal plan"
+                  >
+                    🎉 Start Over
+                  </Button>
+                )}
               {lastMealPlans && (
                 <Button
                   variant="outline"
